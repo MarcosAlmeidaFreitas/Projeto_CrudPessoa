@@ -1,0 +1,20 @@
+meta {
+  name: Create
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3333/persons
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Marcos Antonio Almeida",
+    "cpf": "150.365.527-09",
+    "email": "marcosantonio-freitas@hotmail.com",
+    "image": "caminhorelativo"
+  }
+}
