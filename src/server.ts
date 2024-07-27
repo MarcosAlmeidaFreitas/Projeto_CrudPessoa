@@ -14,7 +14,7 @@ app.post('/persons', (request, reply) => {
     cpf: z.string(), 
     email: z.string().email(), 
     image: z.string(),
-  })
+  });
   
   const data = createEventSchema.parse(request.body);
   return 'hello nwl unite';
@@ -23,4 +23,7 @@ app.post('/persons', (request, reply) => {
 app.listen({ port: 3333 }).then(() => {
   console.log('HTTP SERVER RUNNING');
 })
+
+
+
 
