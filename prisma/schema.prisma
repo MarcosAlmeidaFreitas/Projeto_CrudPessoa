@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Person {
-  id        Int      @id @default(autoincrement()) 
+  id        Int      @id @default(autoincrement())
   name      String
   cpf       String   @unique
   email     String
@@ -19,8 +19,7 @@ model Person {
   image     String?
   dateBirth DateTime
   createdAt DateTime @default(now()) @map("created_at")
-  address    Address?
-  addressId Int
+  address   Address?
 
   @@map("persons")
 }
@@ -29,10 +28,12 @@ model Address {
   id         Int    @id @default(autoincrement())
   street     String
   number     String
-  city       String
   district   String
   complement String
   CEP        String
-  personId   Int @unique
+  city       String
+  state      String
+  country    String
+  personId   Int    @unique
   Person     Person @relation(fields: [personId], references: [id], onDelete: Cascade)
 }
