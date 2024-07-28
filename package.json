@@ -17,7 +17,10 @@
   },
   "dependencies": {
     "@prisma/client": "^5.17.0",
+    "cpf-cnpj-validator": "^1.0.3",
     "fastify": "^4.28.1",
+    "fastify-type-provider-zod": "^2.0.0",
+    "joi": "^17.13.3",
     "zod": "^3.23.8"
   }
 }

@@ -1,6 +1,9 @@
 import fastify from "fastify";
 import { z } from "zod";
+import { serializerCompiler, validatorCompiler, ZodTypeProvider} from "fastify-type-provider-zod"
 import { PrismaClient } from "@prisma/client"
+import { verifyFormatCPF } from "../util/CPF"
+import { maskPhone } from "../util/Phone"
 
 const prisma = new PrismaClient({
   log: ['query']
@@ -30,16 +33,29 @@ app.post('/persons', async (request, reply) => {
   });
 
   const data = createPersonSchema.parse(request.body);
+  
+  const testCPF = await prisma.person.findUnique({
+    where: {
+      cpf: data.cpf
+    }
+  });
 
-  const date = new Date(data.dateBirth);
-  console.log(date);
+  if(testCPF !== null){
+    throw new Error("CPF já cadastrado.")
+  }else{ 
+    if(verifyFormatCPF(data.cpf) !== null){
+      data.cpf = String(verifyFormatCPF(data.cpf));
+    }else{
+      throw new Error("Digite um CPF válido")
+    }
+  }
 
   const person = await prisma.person.create({
     data: {
       name: data.name,
       cpf: data.cpf,
       email: data.email,
-      phone: data.phone,
+      phone: maskPhone(data.phone),
       image: data.image,
       dateBirth: new Date(data.dateBirth),
       address: {
