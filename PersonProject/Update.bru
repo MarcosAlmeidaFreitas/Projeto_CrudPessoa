@@ -1,0 +1,32 @@
+meta {
+  name: Update
+  type: http
+  seq: 3
+}
+
+put {
+  url: http://localhost:3333/persons/1
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Marcos Antonio Almeida Freitas",
+    "cpf": "15036552709",
+    "email": "mantoniofreitas2012@gmail.com",
+    "phone": "22988090282",
+    "image": "caminhorelativo",
+    "dateBirth": "1997-05-04",
+    "address": {
+      "street": "Rua Manoel Pinheiro Sobrinho", 
+      "number": "229",
+      "district": "Centro",
+      "complement": "Fundos",
+      "CEP": "28180-000",
+      "city": "Cardoso Moreira",
+      "state": "Rio de Janeiro",
+      "country": "Brasil"
+    }
+  }
+}

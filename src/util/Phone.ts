@@ -5,4 +5,3 @@ export function maskPhone(number : string){
     return number;
 }
 
-console.log(maskPhone("229888090282"));
