@@ -10,7 +10,7 @@ export async function createPDF(id : number) {
 
   // Pipe its output somewhere, like to a file or HTTP response
   // See below for browser usage
-  doc.pipe(fs.createWriteStream(__dirname + '/temp/output.pdf'));
+  await doc.pipe(fs.createWriteStream(__dirname + '/temp/output.pdf'));
 
   const user = await prisma.person.findUnique({
     where: {
@@ -47,7 +47,7 @@ export async function createPDF(id : number) {
   doc.text(`CEP: ${user.address?.CEP}`);
   doc.text(`Cidade: ${user.address?.city}`);
   doc.text(`Estado: ${user.address?.state}`);
-  doc.text(`´País: ${user.address?.country}`)
+  doc.text(`País: ${user.address?.country}`);
   
   // Finalize PDF file
   doc.end();
