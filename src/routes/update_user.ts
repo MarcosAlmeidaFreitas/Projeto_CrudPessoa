@@ -3,6 +3,7 @@ import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { z } from "zod"
 import { prisma } from "../lib/prisma";
 import { maskPhone } from "../util/Phone"
+
 export async function updateUser(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
@@ -10,7 +11,7 @@ export async function updateUser(app: FastifyInstance) {
       schema: {
         params: z.object({
           id: z.string()
-        }), 
+        }),
         body: z.object({
           name: z.string(),
           cpf: z.string(),
@@ -45,7 +46,7 @@ export async function updateUser(app: FastifyInstance) {
 
       const user = await prisma.person.findUnique({
         where: {
-          id : Number(id)
+          id: Number(id)
         }
       });
 
@@ -68,7 +69,7 @@ export async function updateUser(app: FastifyInstance) {
         }
       })
 
-      return reply.status(201).send({userId: userUpdate.id});
+      return reply.status(201).send({ userId: userUpdate.id });
     })
 }
 

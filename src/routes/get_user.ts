@@ -13,13 +13,16 @@ export async function getUser(app: FastifyInstance) {
         }),
         response: {
           200: z.object({
+            id: z.number(),
             name: z.string(),
             cpf: z.string(),
-            email: z.string().email(),
+            email: z.string(),
             phone: z.string(),
             image: z.string().nullable(),
-            dateBirth: z.string().date(),
+            dateBirth: z.object({data: z.date()}),
+            createdAt: z.object({data: z.date()}),
             address: z.object({
+              id: z.number(),
               street: z.string(),
               number: z.string(),
               district: z.string(),
@@ -28,6 +31,7 @@ export async function getUser(app: FastifyInstance) {
               city: z.string(),
               state: z.string(),
               country: z.string(),
+              personId: z.number(),
             })
           })
         }
@@ -49,8 +53,9 @@ export async function getUser(app: FastifyInstance) {
       if (!user) {
         throw new Error("Usuário não existe");
       }
-
-      return reply.status(200).send(user);
+      
+      console.log(typeof(user.address))
+      //return reply.status(200).send(user);
     })
 }
 

@@ -68,6 +68,8 @@ export async function createUser(app: FastifyInstance) {
         }
       })
 
+      console.log(typeof(new Date(data.dateBirth)))
+
       return reply.status(201).send({ name: person.name });
     })
 }
