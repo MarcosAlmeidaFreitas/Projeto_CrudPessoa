@@ -1,27 +1,27 @@
 meta {
-  name: Update
+  name: CreateUser
   type: http
-  seq: 3
+  seq: 2
 }
 
-put {
-  url: http://localhost:3333/persons/1
+post {
+  url: http://localhost:3333/persons
   body: json
   auth: none
 }
 
 body:json {
   {
-    "name": "Marcos Antonio Almeida Freitas",
+    "name": "Marcos Antonio Almeida",
     "cpf": "15036552709",
-    "email": "mantoniofreitas2012@gmail.com",
+    "email": "marcosantonio-freitas@hotmail.com",
     "phone": "22988090282",
     "image": "caminhorelativo",
     "dateBirth": "1997-05-04",
     "address": {
       "street": "Rua Manoel Pinheiro Sobrinho", 
       "number": "229",
-      "district": "Centro",
+      "district": "Palmeiras",
       "complement": "Fundos",
       "CEP": "28180-000",
       "city": "Cardoso Moreira",

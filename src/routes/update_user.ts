@@ -8,6 +8,9 @@ export async function updateUser(app: FastifyInstance) {
     .withTypeProvider<ZodTypeProvider>()
     .put('/persons/:id', {
       schema: {
+        params: z.object({
+          id: z.string()
+        }), 
         body: z.object({
           name: z.string(),
           cpf: z.string(),
