@@ -8,6 +8,7 @@ import { descriptionUserPDF } from "./routes/get_descriptionUserPDF"
 import { getUsers } from "./routes/get_users";
 import path from "path";
 import fastifyStatic from "@fastify/static";
+import { errorHandler } from "./util/error-handler";
 
 const app = fastify();
 
@@ -25,6 +26,8 @@ app.register(getUser);
 app.register(getUsers);
 app.register(descriptionUserPDF);
 
+//classe de error que está dentro utils
+app.setErrorHandler(errorHandler);
 
 app.listen({ port: 3333 }).then(() => {
   console.log('HTTP SERVER RUNNING');

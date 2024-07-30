@@ -2,8 +2,7 @@ import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { z } from "zod";
 import { createPDF } from "../util/Pdf";
-import { createReadStream } from "node:fs"
-import path from "node:path";
+
 
 export async function descriptionUserPDF(app: FastifyInstance){
   app.withTypeProvider<ZodTypeProvider>()
@@ -18,6 +17,5 @@ export async function descriptionUserPDF(app: FastifyInstance){
       await createPDF(Number(id)).then(
         await reply.sendFile('output.pdf')
       );
-
     });
 }
