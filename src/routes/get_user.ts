@@ -49,9 +49,9 @@ export async function getUser(app: FastifyInstance) {
       const user = await prisma.person.findUnique({
         where: {
           id: Number(id)
-        }, include: {
-        address: true
-        }
+        }, //include: {
+        //address: true
+        //}
       });
 
       const address = await prisma.address.findUnique({
@@ -63,11 +63,12 @@ export async function getUser(app: FastifyInstance) {
       if (!user) {
         throw new Error("Usuário não existe");
       }
-      
+
       if (!address) {
-        throw new Error("Usuário não existe");
+        throw new Error("Endereço não existe");
       }
 
       console.log(address);
       return reply.status(200).send({ user, address });
-})}
+    })
+}
