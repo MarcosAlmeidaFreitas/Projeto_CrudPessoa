@@ -2,12 +2,15 @@ import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { z } from "zod"
 import { prisma } from "../lib/prisma";
+import { BadRequest } from "./_errors/bad-request";
 
 export async function deleteUser(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .delete('/persons/:id', {
       schema: {
+        summary: "Delete user",
+        tags: ['User'],
         params: z.object({
           id: z.string()
         })
@@ -25,7 +28,7 @@ export async function deleteUser(app: FastifyInstance) {
       });
 
       if (!user) {
-        throw new Error("Usuário não existe");
+        throw new BadRequest("Usuário não existe");
       }
 
       await prisma.person.delete({

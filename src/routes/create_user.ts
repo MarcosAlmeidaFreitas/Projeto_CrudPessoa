@@ -4,12 +4,16 @@ import { maskPhone } from "../util/Phone"
 import { z } from "zod"
 import { ZodTypeProvider } from "fastify-type-provider-zod"
 import { prisma } from "../lib/prisma"
+import { BadRequest } from "./_errors/bad-request";
 
 export async function createUser(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .post('/persons', {
       schema: {
+        summary: "create user",
+        tags: ['User'],
+
         body: z.object({
           name: z.string(),
           cpf: z.string(),
@@ -30,7 +34,7 @@ export async function createUser(app: FastifyInstance) {
         }),
         response: {
           201: z.object({
-            name: z.string()
+            id: z.number()
           })
         }
       }
@@ -48,10 +52,10 @@ export async function createUser(app: FastifyInstance) {
         if (verifyFormatCPF(data.cpf) !== null) {
           data.cpf = String(verifyFormatCPF(data.cpf));
         } else {
-          throw new Error("Digite um CPF válido");
+          throw new BadRequest("Digite um CPF válido");
         }
       } else {
-        throw new Error("CPF já cadastrado");
+        throw new BadRequest("CPF já cadastrado");
       }
 
       const person = await prisma.person.create({
@@ -70,7 +74,7 @@ export async function createUser(app: FastifyInstance) {
 
       console.log(typeof(new Date(data.dateBirth)))
 
-      return reply.status(201).send({ name: person.name });
+      return reply.status(201).send({ id: person.id });
     })
 }
 

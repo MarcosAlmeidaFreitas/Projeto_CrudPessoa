@@ -3,12 +3,15 @@ import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { z } from "zod"
 import { prisma } from "../lib/prisma";
 import { maskPhone } from "../util/Phone"
+import { BadRequest } from "./_errors/bad-request";
 
 export async function updateUser(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .put('/persons/:id', {
       schema: {
+        summary: "Upload user",
+        tags: ['User'],
         params: z.object({
           id: z.string()
         }),
@@ -51,7 +54,7 @@ export async function updateUser(app: FastifyInstance) {
       });
 
       if (!user) {
-        throw new Error("Usuário não existe");
+        throw new BadRequest("Usuário não existe");
       }
 
       const userUpdate = await prisma.person.update({

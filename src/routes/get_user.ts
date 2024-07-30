@@ -2,12 +2,15 @@ import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { z } from "zod"
 import { prisma } from "../lib/prisma";
+import { BadRequest } from "./_errors/bad-request";
 
 export async function getUser(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .get('/persons/:id', {
       schema: {
+        summary: "Get user",
+        tags: ['User'],
         params: z.object({
           id: z.string()
         }),
@@ -46,6 +49,10 @@ export async function getUser(app: FastifyInstance) {
         id: string
       }
 
+      if(!id){
+        throw new BadRequest("Id inválido")
+      }
+
       const user = await prisma.person.findUnique({
         where: {
           id: Number(id)
@@ -61,11 +68,11 @@ export async function getUser(app: FastifyInstance) {
       })
 
       if (!user) {
-        throw new Error("Usuário não existe");
+        throw new BadRequest("Usuário não existe");
       }
 
       if (!address) {
-        throw new Error("Endereço não existe");
+        throw new BadRequest("Endereço não existe");
       }
 
       console.log(address);

@@ -8,6 +8,8 @@ export async function getUsers(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>()
     .get("/getUsers", {
       schema: {
+        summary: "Get users",
+        tags: ['User'],
         querystring: z.object({
           query: z.string().optional(),
           pageIndex: z.string().optional()
