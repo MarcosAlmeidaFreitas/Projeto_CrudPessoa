@@ -11,18 +11,22 @@ export async function getUser(app: FastifyInstance) {
         params: z.object({
           id: z.string()
         }),
+
         response: {
           200: z.object({
-            id: z.number(),
-            name: z.string(),
-            cpf: z.string(),
-            email: z.string(),
-            phone: z.string(),
-            image: z.string().nullable(),
-            dateBirth: z.object({data: z.date()}),
-            createdAt: z.object({data: z.date()}),
-            address: z.object({
+            user: z.object({
               id: z.number(),
+              name: z.string(),
+              cpf: z.string(),
+              email: z.string(),
+              phone: z.string(),
+              image: z.string().nullable(),
+              dateBirth: z.date(),
+              createdAt: z.date(),
+            }),
+
+            address: z.object({
+              id: z.number().int(),
               street: z.string(),
               number: z.string(),
               district: z.string(),
@@ -31,11 +35,11 @@ export async function getUser(app: FastifyInstance) {
               city: z.string(),
               state: z.string(),
               country: z.string(),
-              personId: z.number(),
+              personId: z.number().int()
             })
-          })
-        }
-      }
+          })//fecha o objeto
+        }//fecha o response
+      }//fecha o schema
     }, async (request, reply) => {
 
       const { id } = request.params as {
@@ -46,16 +50,24 @@ export async function getUser(app: FastifyInstance) {
         where: {
           id: Number(id)
         }, include: {
-          address: true
+        address: true
         }
       });
+
+      const address = await prisma.address.findUnique({
+        where: {
+          personId: Number(id)
+        }
+      })
 
       if (!user) {
         throw new Error("Usuário não existe");
       }
       
-      console.log(typeof(user.address))
-      //return reply.status(200).send(user);
-    })
-}
+      if (!address) {
+        throw new Error("Usuário não existe");
+      }
 
+      console.log(address);
+      return reply.status(200).send({ user, address });
+})}
