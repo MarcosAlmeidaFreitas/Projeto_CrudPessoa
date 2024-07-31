@@ -4,7 +4,7 @@ import { z } from "zod";
 import { createPDF } from "../util/Pdf";
 import { prisma } from "../lib/prisma";
 import { BadRequest } from "./_errors/bad-request";
-
+import fs from "fs"
 
 export async function descriptionUserPDF(app: FastifyInstance){
   app.withTypeProvider<ZodTypeProvider>()
@@ -14,7 +14,7 @@ export async function descriptionUserPDF(app: FastifyInstance){
         tags: ['User'],
         params: z.object({
           id: z.string()
-        })
+        }),
       }
     }, async (request, reply) => {
       const { id } = request.params;
@@ -33,8 +33,9 @@ export async function descriptionUserPDF(app: FastifyInstance){
         throw new BadRequest("Usuário não encontrado");
       }  
       
+      
       await createPDF(Number(id)).then(
         await reply.sendFile('output.pdf')
       );
-    });
+  });
 }

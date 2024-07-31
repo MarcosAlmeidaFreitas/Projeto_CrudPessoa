@@ -9,10 +9,13 @@ import { getUsers } from "./routes/get_users";
 import path from "path";
 import fastifyStatic from "@fastify/static";
 import { errorHandler } from "./util/error-handler";
+import multipart from '@fastify/multipart'
 
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUI, { fastifySwaggerUi } from "@fastify/swagger-ui";
 import fastifyCors from "@fastify/cors";
+import { upload } from "./routes/upload";
+
 
 const app = fastify();
 
@@ -35,6 +38,9 @@ app.register(fastifySwagger, {
   transform: jsonSchemaTransform,
 });
 
+//registrando o multipart para trabalhar com imagens.
+app.register(multipart)
+
 //registrando a rota de documentação
 app.register(fastifySwaggerUI, {
   routePrefix: "/docs"
@@ -54,6 +60,7 @@ app.register(deleteUser);
 app.register(getUser);
 app.register(getUsers);
 app.register(descriptionUserPDF);
+app.register(upload)
 
 //classe de tratamento de error que está dentro utils
 app.setErrorHandler(errorHandler);
