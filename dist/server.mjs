@@ -1,9 +1,12 @@
 import {
+  upload
+} from "./chunk-TL6NJDX4.mjs";
+import {
   errorHandler
 } from "./chunk-NUBWJW2M.mjs";
 import {
   createUser
-} from "./chunk-V6MIEFLM.mjs";
+} from "./chunk-PGPSDI6B.mjs";
 import {
   deleteUser
 } from "./chunk-LCX3OVXJ.mjs";
@@ -31,6 +34,7 @@ import fastify from "fastify";
 import { serializerCompiler, validatorCompiler, jsonSchemaTransform } from "fastify-type-provider-zod";
 import path from "path";
 import fastifyStatic from "@fastify/static";
+import multipart from "@fastify/multipart";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUI from "@fastify/swagger-ui";
 import fastifyCors from "@fastify/cors";
@@ -51,6 +55,7 @@ app.register(fastifySwagger, {
   },
   transform: jsonSchemaTransform
 });
+app.register(multipart);
 app.register(fastifySwaggerUI, {
   routePrefix: "/docs"
 });
@@ -65,6 +70,7 @@ app.register(deleteUser);
 app.register(getUser);
 app.register(getUsers);
 app.register(descriptionUserPDF);
+app.register(upload);
 app.setErrorHandler(errorHandler);
 app.listen({ port: 3333, host: "0.0.0.0" }).then(() => {
   console.log("HTTP SERVER RUNNING");
