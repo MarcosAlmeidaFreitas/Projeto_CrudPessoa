@@ -7,6 +7,7 @@ import util from "node:util"
 import { pipeline } from "node:stream";
 import { createWriteStream } from "fs";
 import path from "path";
+import crypto from "crypto"
 
 export async function upload( app : FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>()
@@ -31,7 +32,8 @@ export async function upload( app : FastifyInstance) {
     }
     const pump = util.promisify(pipeline)
     try{
-      const filePath = path.resolve("public", "upload", "images", `${data.filename}`)
+      const hash = crypto.randomBytes(6).toString('hex') + "-" + crypto.randomBytes(6).toString('hex') ; 
+      const filePath = path.resolve("public", "upload", "images", `${hash}-${data.filename}`)
       await pump(data.file, createWriteStream(filePath));
       
       const location = await prisma.person.findUnique({
