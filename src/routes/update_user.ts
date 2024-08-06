@@ -20,7 +20,7 @@ export async function updateUser(app: FastifyInstance) {
           cpf: z.string(),
           email: z.string().email(),
           phone: z.string(),
-          image: z.string().nullable(),
+          image: z.string().nullable().optional(),
           dateBirth: z.string().date(),
           address: z.object({
             street: z.string(),
@@ -65,7 +65,9 @@ export async function updateUser(app: FastifyInstance) {
           name: data.name,
           email: data.email,
           phone: maskPhone(data.phone),
-          image: data.image,
+          ...(data.image ? ({
+            image: data.image,
+          }): {}),
           address: {
             update: data.address
           }

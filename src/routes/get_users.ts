@@ -35,7 +35,13 @@ export async function getUsers(app: FastifyInstance) {
       let page = Number(pageIndex ?? 0);
       let listUsers;
 
-      if(!query){
+      if(!query && !pageIndex){
+        listUsers = await prisma.person.findMany({
+          orderBy: {
+            name: 'asc'
+          }
+        });
+      }else if(!query){
         listUsers = await prisma.person.findMany({
           take: 10,
           skip: page * 10,

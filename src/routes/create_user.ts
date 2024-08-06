@@ -19,7 +19,7 @@ export async function createUser(app: FastifyInstance) {
           cpf: z.string(),
           email: z.string().email(),
           phone: z.string(),
-          image: z.string().nullable(),
+          image: z.string().nullable().optional(),
           dateBirth: z.string().date(),
           address: z.object({
             street: z.string(),
@@ -58,21 +58,28 @@ export async function createUser(app: FastifyInstance) {
         throw new BadRequest("CPF já cadastrado");
       }
 
-      const person = await prisma.person.create({
-        data: {
-          name: data.name,
-          cpf: data.cpf,
-          email: data.email,
-          phone: maskPhone(data.phone),
-          image: data.image,
-          dateBirth: new Date(data.dateBirth),
-          address: {
-            create: data.address
-          }
-        }
-      })
+      
 
-      return reply.status(201).send({ id: person.id });
+      try {
+        
+        const person = await prisma.person.create({
+          data: {
+            name: data.name,
+            cpf: data.cpf,
+            email: data.email,
+            phone: maskPhone(data.phone),
+            image: data.image,
+            dateBirth: new Date(data.dateBirth),
+            address: {
+              create: data.address
+            }
+          }
+        })
+        return reply.status(201).send({ id: person?.id });
+      } catch (error) {
+        console.log(error)
+      }
+
     })
 }
 
